@@ -80,7 +80,7 @@
                         </tfoot>
                     </table>
                     <div class="notices">
-                        <div>Terimakasih telah singgah di restoran kami.</div>
+                        <div>Terimakasih telah singgah di kedai kami.</div>
                     </div>
                 </main>
             </div>
