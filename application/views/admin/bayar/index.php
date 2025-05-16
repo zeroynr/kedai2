@@ -30,6 +30,7 @@
                         <table class="table table-flush dataTable" id="datatable-id" role="grid" aria-describedby="datatable-basic_info">
                             <thead class="thead-dark">
                                 <tr role="row">
+                                    <th>No</th>
                                     <th>Kode Pembayaran</th>
                                     <th>Nama Pemesan</th>
                                     <th>Tanggal Pesan</th>
@@ -47,6 +48,7 @@
                                 foreach ($booking as $mk) {
                                 ?>
                                     <tr>
+                                        <td><?= $no ?></td>
                                         <td><?= $mk['id_detail_menu'] ?></td>
                                         <td><?= $mk['nama_pemesan'] ?></td>
                                         <td><?= $mk['tanggal_pesan'] ?></td>
