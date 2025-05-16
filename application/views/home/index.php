@@ -189,6 +189,86 @@ $this->load->view('home/layout/header');
     </div>
   </section><!-- End Recent Photos Section -->
 
+  <!-- ======= Development Team Section ======= -->
+  <section id="dev-team" class="dev-team">
+    <div class="container">
+      <div class="section-title">
+        <h2>TIM PENGEMBANG</h2>
+        <p>Aplikasi ini dikembangkan oleh tim mahasiswa berbakat dari Universitas Negeri Surabaya</p>
+      </div>
+
+      <div class="row">
+        <!-- Developer 1 -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member">
+            <div class="member-img">
+              <img src="<?= base_url() ?>assets/home/img/yayang.jpeg" class="img-fluid" alt="Developer">
+              <div class="social">
+                <a href="https://github.com/zeroynr/kedaikopi.git"><i class="bi bi-github"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>YAYANG BARRU AFRIZA</h4>
+              <span>23050974041</span>
+              <p>Data Analyst</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Developer 2 -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member">
+            <div class="member-img">
+              <img src="<?= base_url() ?>assets/home/img/nazril.jpeg" class="img-fluid" alt="Developer">
+              <div class="social">
+                <a href="https://github.com/zeroynr/kedaikopi.git"><i class="bi bi-github"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>MOCHAMAD NAZRIL ILHAM</h4>
+              <span>23050974049</span>
+              <p>UI/UX Designer</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Developer 3 -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member">
+            <div class="member-img">
+              <img src="<?= base_url() ?>assets/home/img/ridho.jpeg" class="img-fluid" alt="Developer">
+              <div class="social">
+                <a href="https://github.com/zeroynr/kedaikopi.git"><i class="bi bi-github"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>MUHAMMAD RIDHO ARDIANSYAH</h4>
+              <span>23050974059</span>
+              <p>Front-end and Back-end Developer</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Developer 4 -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member">
+            <div class="member-img">
+              <img src="<?= base_url() ?>assets/home/img/himmati.jpeg" class="img-fluid" alt="Developer">
+              <div class="social">
+                <a href="https://github.com/zeroynr/kedaikopi.git"><i class="bi bi-github"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>HIMMATI MUYASSAROH</h4>
+              <span>23050974064</span>
+              <p>Documentation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Development Team Section -->
+
   <!-- CSS untuk ditambahkan ke file CSS Anda -->
   <style>
     .menu-scroll-container {
@@ -255,6 +335,157 @@ $this->load->view('home/layout/header');
       .menu-item {
         width: 240px;
         margin: 0 10px;
+      }
+    }
+
+    /* Styles for Development Team section to match light theme like other sections */
+    .dev-team {
+      padding: 80px 0;
+      background: #fff;
+      /* Light background to match other sections */
+      position: relative;
+    }
+
+    .dev-team:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .dev-team .section-title h2 {
+      color: #2c4964;
+      /* Consistent with other sections */
+      font-size: 32px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .dev-team .section-title h2:after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #ff7e00;
+      /* Orange accent to match POS CAFE */
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .dev-team .section-title p {
+      margin-bottom: 40px;
+      color: #666;
+      /* Standard text color */
+    }
+
+    .dev-team .member {
+      margin-bottom: 30px;
+      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .dev-team .member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .dev-team .member .member-img {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dev-team .member .member-img img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .dev-team .member:hover .member-img img {
+      transform: scale(1.1);
+    }
+
+    .dev-team .member .social {
+      position: absolute;
+      left: 0;
+      bottom: -40px;
+      right: 0;
+      height: 40px;
+      opacity: 0;
+      transition: bottom 0.5s ease, opacity 0.5s ease;
+      background: rgba(255, 126, 0, 0.85);
+      /* Orange to match POS CAFE */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dev-team .member:hover .social {
+      bottom: 0;
+      opacity: 1;
+    }
+
+    .dev-team .member .social a {
+      transition: color 0.3s;
+      color: #fff;
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    .dev-team .member .social a:hover {
+      color: #ffcda3;
+    }
+
+    .dev-team .member .member-info {
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    .dev-team .member .member-info h4 {
+      font-weight: 700;
+      margin-bottom: 5px;
+      font-size: 18px;
+      color: #2c4964;
+      /* Standard heading color */
+    }
+
+    .dev-team .member .member-info span {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ff7e00;
+      /* Orange color to match theme */
+      margin-bottom: 10px;
+    }
+
+    .dev-team .member .member-info p {
+      font-style: italic;
+      font-size: 14px;
+      line-height: 26px;
+      color: #777777;
+      /* Standard paragraph color */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .dev-team .member {
+        margin-bottom: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dev-team .member .member-img img {
+        height: 220px;
       }
     }
   </style>
