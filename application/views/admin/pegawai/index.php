@@ -121,7 +121,6 @@
                             <option value="" selected disabled>Pilih Jabatan</option>
                             <option value="admin">Admin</option>
                             <option value="pegawai">Pegawai</option>
-                            <option value="kasir">Kasir</option>
                         </select>
                     </div>
             </div>
