@@ -1,99 +1,91 @@
-
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Pegawai_model extends CI_Model
 {
+    protected $table = 'pegawai';
 
+    // Ambil semua pegawai
     public function getAllPegawai()
     {
-        $query = $this->db->query("SELECT * FROM pegawai");
-        return $query->result_array();
+        return $this->db->get($this->table)->result_array();
     }
 
+    // Ambil pegawai berdasarkan ID
     public function getPegawaiById($id)
     {
-        // Gunakan parameter binding untuk mencegah SQL injection
-        $query = $this->db->query("SELECT * FROM pegawai WHERE id_pegawai = ?", [$id]);
+        $query = $this->db->get_where($this->table, ['id_pegawai' => $id]);
         return $query->row();
     }
 
-    // Selaraskan metode ini dengan getPegawaiById untuk konsistensi
-    public function get_pegawai_by_id($id)
-    {
-        // Gunakan parameter binding untuk mencegah SQL injection
-        $query = $this->db->query("SELECT * FROM pegawai WHERE id_pegawai = ?", [$id]);
-        return $query->row();
-    }
-
+    // Tambah data pegawai baru
     public function tambah_pegawai()
     {
+        $password = $this->input->post('password');
         $data = [
-            'nama' => $this->input->post('nama'),
-            'email' => $this->input->post('email'),
-            'alamat' => $this->input->post('alamat'),
-            "password" => htmlspecialchars(MD5($this->input->post('password'))),
-            'telepon' => $this->input->post('telepon'),
+            'nama' => htmlspecialchars($this->input->post('nama')),
+            'email' => htmlspecialchars($this->input->post('email')),
+            'alamat' => htmlspecialchars($this->input->post('alamat')),
+            'telepon' => htmlspecialchars($this->input->post('telepon')),
             'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-            'jabatan' => $this->input->post('jabatan')
+            'jabatan' => $this->input->post('jabatan'),
+            'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
-        $this->db->insert('pegawai', $data);
+        $this->db->insert($this->table, $data);
     }
 
+    // Edit data pegawai
     public function edit_pegawai()
     {
         $data = [
-            'nama' => $this->input->post('nama'),
-            'email' => $this->input->post('email'),
-            'alamat' => $this->input->post('alamat'),
-            'telepon' => $this->input->post('telepon'),
+            'nama' => htmlspecialchars($this->input->post('nama')),
+            'email' => htmlspecialchars($this->input->post('email')),
+            'alamat' => htmlspecialchars($this->input->post('alamat')),
+            'telepon' => htmlspecialchars($this->input->post('telepon')),
             'jenis_kelamin' => $this->input->post('jenis_kelamin'),
             'jabatan' => $this->input->post('jabatan')
         ];
 
-        // Jika password diisi, update password
-        if (!empty($this->input->post('password'))) {
-            $data['password'] = htmlspecialchars(MD5($this->input->post('password')));
+        // Jika password diisi, update password dengan hashing baru
+        $new_password = $this->input->post('password');
+        if (!empty($new_password)) {
+            $data['password'] = password_hash($new_password, PASSWORD_DEFAULT);
         }
 
         $this->db->where('id_pegawai', $this->input->post('id_pegawai'));
-        $this->db->update('pegawai', $data);
+        $this->db->update($this->table, $data);
     }
 
-    public function ubah_password_pegawai()
-    {
-        $data = [
-            'password' => htmlspecialchars(MD5($this->input->post('password')))
-        ];
-        $this->db->where('id_pegawai', $this->input->post('id_pegawai'));
-        $this->db->update('pegawai', $data);
-    }
-
+    // Hapus pegawai berdasarkan ID
     public function hapus_pegawai($id)
     {
-        // Gunakan query builder dengan parameter binding untuk mencegah SQL injection
-        $this->db->where('id_pegawai', $id);
-        return $this->db->delete('pegawai');
+        return $this->db->delete($this->table, ['id_pegawai' => $id]);
     }
+
+    // Edit profil pribadi (tanpa password)
     public function editMyProfile()
     {
         $data = [
-            'nama' => $this->input->post('nama'),
-            'alamat' => $this->input->post('alamat'),
-            'telepon' => $this->input->post('telepon')
+            'nama' => htmlspecialchars($this->input->post('nama')),
+            'alamat' => htmlspecialchars($this->input->post('alamat')),
+            'telepon' => htmlspecialchars($this->input->post('telepon'))
         ];
         $this->db->where('id_pegawai', $this->input->post('id_pegawai'));
-        $this->db->update('pegawai', $data);
+        $this->db->update($this->table, $data);
     }
 
-    public function ubahPassword()
+    // Ubah password berdasarkan ID pegawai
+    public function ubahPassword($id = null)
     {
-        // Fitur ubah password pegawai
+        $id_pegawai = $id ?? $this->session->userdata('id_pegawai');
+        $password = $this->input->post('password');
+
         $data = [
-            "password" => htmlspecialchars(MD5($this->input->post('password')))
+            'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
-        $this->db->where('id_pegawai', $this->session->userdata('id_pegawai'));
-        $this->db->update('pegawai', $data);
+
+        $this->db->where('id_pegawai', $id_pegawai);
+        $this->db->update($this->table, $data);
     }
 }
