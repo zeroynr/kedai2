@@ -19,6 +19,13 @@ class Pegawai_model extends CI_Model
         return $query->row();
     }
 
+    public function get_pegawai_by_id($id)
+    {
+        // Gunakan parameter binding untuk mencegah SQL injection
+        $query = $this->db->query("SELECT * FROM pegawai WHERE id_pegawai = ?", [$id]);
+        return $query->row();
+    }
+
     // Tambah data pegawai baru
     public function tambah_pegawai()
     {
