@@ -30,48 +30,44 @@
                     </div>
                     <div class="card-body">
                         <div class="pl-lg-4">
-                            <?php
-                            foreach ($det as $i) {
-                            ?>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Nama Pegawai :</label>
-                                            <label><?= $i['nama'] ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Email :</label>
-                                            <label><?= $i['email'] ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Alamat :</label>
-                                            <label><?= $i['alamat'] ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Jenis Kelamin :</label>
-                                            <label><?= $i['jenis_kelamin'] ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Telepon :</label>
-                                            <label><?= $i['telepon'] ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Jabatan :</label>
-                                            <label><?= $i['jabatan'] ?></label>
-                                        </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Nama Pegawai :</label>
+                                        <label><?= $det->nama ?></label>
                                     </div>
                                 </div>
-                            <?php } ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Email :</label>
+                                        <label><?= $det->email ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Alamat :</label>
+                                        <label><?= $det->alamat ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Jenis Kelamin :</label>
+                                        <label><?= $det->jenis_kelamin ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Telepon :</label>
+                                        <label><?= $det->telepon ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Jabatan :</label>
+                                        <label><?= $det->jabatan ?></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

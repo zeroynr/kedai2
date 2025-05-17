@@ -52,6 +52,8 @@ class Admin extends CI_Controller
         $this->load->view('admin/index');
         $this->load->view('admin/layout/footer');
     }
+
+    // Metode daftar_pegawai
     public function daftar_pegawai()
     {
         $data['title'] = 'Dashboard Pegawai';
@@ -62,6 +64,8 @@ class Admin extends CI_Controller
         $this->load->view('admin/pegawai/index');
         $this->load->view('admin/layout/footer');
     }
+
+    // Metode tambah_pegawai
     public function tambah_pegawai()
     {
         $this->form_validation->set_rules(
@@ -79,6 +83,7 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('alamat', 'alamat', 'required');
         $this->form_validation->set_rules('jenis_kelamin', 'jenis_kelamin', 'required');
         $this->form_validation->set_rules('telepon', 'telepon', 'required|numeric');
+        $this->form_validation->set_rules('jabatan', 'jabatan', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
@@ -91,6 +96,66 @@ class Admin extends CI_Controller
             redirect('admin/daftar_pegawai');
         }
     }
+
+    // Metode edit_pegawai
+    public function edit_pegawai()
+    {
+        // Validasi ID sebagai langkah keamanan tambahan
+        $id_pegawai = (int)$this->input->post('id_pegawai');
+        if (!$id_pegawai) {
+            $this->session->set_flashdata('error', 'ID pegawai tidak valid');
+            redirect('admin/daftar_pegawai');
+            return;
+        }
+
+        // Jika mengedit email, periksa apakah email sudah digunakan orang lain
+        $current_email = $this->db->get_where('pegawai', ['id_pegawai' => $id_pegawai])->row()->email;
+        if ($current_email != $this->input->post('email')) {
+            $this->form_validation->set_rules(
+                'email',
+                'email',
+                'required|is_unique[pegawai.email]',
+                array(
+                    'is_unique' => 'Email telah digunakan!'
+                )
+            );
+        } else {
+            $this->form_validation->set_rules('email', 'email', 'required');
+        }
+
+        // Validasi password hanya jika diisi
+        if (!empty($this->input->post('password'))) {
+            $this->form_validation->set_rules('password', 'password', 'trim|min_length[5]', [
+                'min_length' => 'Password minimum 5 character'
+            ]);
+        }
+
+        $this->form_validation->set_rules('nama', 'nama', 'trim|required');
+        $this->form_validation->set_rules('alamat', 'alamat', 'required');
+        $this->form_validation->set_rules('jenis_kelamin', 'jenis_kelamin', 'required');
+        $this->form_validation->set_rules('telepon', 'telepon', 'required|numeric');
+        $this->form_validation->set_rules('jabatan', 'jabatan', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect('admin/daftar_pegawai');
+        } else {
+            try {
+                // Tambahkan logging untuk debugging
+                log_message('debug', 'Data edit pegawai: ' . json_encode($this->input->post()));
+
+                $this->Pegawai_model->edit_pegawai();
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Sukses Mengubah Data Pegawai
+            </div>');
+            } catch (Exception $e) {
+                $this->session->set_flashdata('error', 'Gagal mengubah data: ' . $e->getMessage());
+            }
+            redirect('admin/daftar_pegawai');
+        }
+    }
+
+    // Metode detail_pegawai
     public function detail_pegawai($id)
     {
         $data['title'] = 'Dashboard Pegawai';
@@ -101,18 +166,51 @@ class Admin extends CI_Controller
         $this->load->view('admin/pegawai/detail');
         $this->load->view('admin/layout/footer');
     }
+
+    // Metode hapus_pegawai
     public function hapus_pegawai($id)
     {
         if ($this->session->userdata('jabatan') != "admin") {
             redirect('admin');
         } else {
-            $this->Pegawai_model->hapus_pegawai($id);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            // Casting ke integer untuk mencegah SQL injection
+            $id = (int)$id;
+
+            try {
+                $this->Pegawai_model->hapus_pegawai($id);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Sukses Menghapus Data Pegawai
             </div>');
+            } catch (Exception $e) {
+                $this->session->set_flashdata('error', 'Gagal menghapus data: ' . $e->getMessage());
+            }
             redirect('admin/daftar_pegawai');
         }
     }
+
+    // Metode get_pegawai_by_id - Perbaikan metode untuk mendapatkan data pegawai untuk edit
+    public function get_pegawai_by_id($id)
+    {
+        // Pastikan response adalah JSON valid
+        header('Content-Type: application/json');
+
+        // Gunakan casting integer untuk mencegah SQL injection
+        $id = (int)$id;
+
+        // Gunakan model yang sudah diperbaiki
+        $data = $this->Pegawai_model->getPegawaiById($id);
+
+        // Tambahkan logging untuk debugging
+        log_message('debug', 'Data pegawai yang diambil: ' . json_encode($data));
+
+        // Pastikan data bukan null sebelum dikonversi ke JSON
+        if ($data) {
+            echo json_encode($data);
+        } else {
+            echo json_encode(['error' => 'Data pegawai tidak ditemukan']);
+        }
+    }
+
     public function change_password()
     {
         $this->form_validation->set_rules('password', 'password', 'required|trim|min_length[5]', [
@@ -128,15 +226,6 @@ class Admin extends CI_Controller
             </div>');
             redirect('admin/daftar_pegawai');
         }
-    }
-    public function get_pegawai_by_id($id)
-    {
-        echo json_encode($this->Pegawai_model->getPegawaiById($id));
-    }
-
-    public function get_transaksi_by_invoice($invoice)
-    {
-        echo json_encode($this->Pos_model->getTransaksiByInvoice($invoice));
     }
 
     public function pos($invoice)
